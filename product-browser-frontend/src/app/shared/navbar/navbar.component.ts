@@ -16,6 +16,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   userName = '';
   profilePictureUrl: string | null = null;
   cartItemsCount = 0;
+  showNavbar = true;
 
   private userSub!: Subscription;
   private cartSub!: Subscription;
@@ -24,13 +25,20 @@ export class NavbarComponent implements OnInit, OnDestroy {
     private authService: AuthService,
     private cartService: CartService,
     private router: Router
-  ) { }
+  ) {
+    this.router.events.subscribe(() => {
+      this.showNavbar = !this.router.url.includes('/login') &&
+        !this.router.url.includes('/register');
+    });
+  }
 
   ngOnInit(): void {
     this.userSub = this.authService.currentUser.subscribe(user => {
       this.isLoggedIn = !!user;
       if (user) {
-        this.userName = user.name || '';
+        console.log(user);
+
+        this.userName = user.email || '';
         this.profilePictureUrl = this.authService.getProfilePicture();
         this.isAdmin = this.authService.isAdmin();
       } else {

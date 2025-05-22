@@ -20,3 +20,7 @@ body {
   border-radius: 50%;
   object-fit: cover;
 }
+
+.spinner-border {
+  vertical-align: middle;
+}

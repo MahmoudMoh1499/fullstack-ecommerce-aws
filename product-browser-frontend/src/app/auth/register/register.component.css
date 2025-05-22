@@ -1,0 +1,30 @@
+.registration-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #f8f9fa;
+  padding: 2rem;
+}
+
+.register-card {
+  width: 100%;
+  max-width: 500px;
+  border: none;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.invalid-feedback {
+  display: block;
+  color: #dc3545;
+  font-size: 0.875em;
+}
+
+.is-invalid {
+  border-color: #dc3545;
+}
+
+.img-thumbnail {
+  border-radius: 50%;
+}

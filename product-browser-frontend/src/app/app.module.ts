@@ -12,6 +12,8 @@ import { AppComponent } from './app.component';
 import { JwtInterceptor } from './core/jwt.interceptor';
 import { SharedModule } from './shared/shared.module';  // Add this import
 
+import { ReactiveFormsModule } from '@angular/forms';
+
 export function tokenGetter() {
   return localStorage.getItem('access_token');
 }
@@ -25,6 +27,7 @@ export function tokenGetter() {
     AppRoutingModule,
     HttpClientModule,
     BrowserAnimationsModule,
+    ReactiveFormsModule,
     ToastrModule.forRoot(),
     JwtModule.forRoot({
       config: {
