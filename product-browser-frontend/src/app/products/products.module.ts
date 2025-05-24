@@ -1,27 +1,20 @@
 // src/app/products/products.module.ts
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
-
-// Components
 import { ProductListComponent } from './product-list/product-list.component';
-import { ProductDetailComponent } from './product-detail/product-detail.component';
+import { FormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
+import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
-  declarations: [
-    ProductListComponent,
-    ProductDetailComponent
-  ],
+  declarations: [ProductListComponent],
   imports: [
     CommonModule,
+    FormsModule,
+    SharedModule,
     RouterModule.forChild([
-      { path: '', component: ProductListComponent, data: { animation: 'products' } },
-      { path: ':id', component: ProductDetailComponent, data: { animation: 'product' } }
+      { path: '', component: ProductListComponent }
     ])
-  ],
-  exports: [
-    ProductListComponent,
-    ProductDetailComponent
   ]
 })
 export class ProductsModule { }

@@ -7,7 +7,13 @@ export const API_CONFIG = {
       register: '/register'
     },
     products: '/products',
-    cart: '/cart',
+    cart: {
+      base: '/cart',
+      add: '/cart/add',
+      remove: '/cart/remove',
+      get: '/cart',
+      updateQuantity: '/cart/update-quantity'
+    },
     user: '/user'
   }
 };

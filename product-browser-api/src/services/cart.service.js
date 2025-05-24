@@ -30,7 +30,6 @@ module.exports = {
         return module.exports.getCartItems(userId); // Changed this to module.exports
     },
 
-    // Remove item from cart
     removeFromCart: async (userId, productId) => {
         const [carts] = await pool.query(
             'SELECT id FROM carts WHERE user_id = ?',

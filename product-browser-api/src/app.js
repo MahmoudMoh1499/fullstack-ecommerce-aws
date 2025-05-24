@@ -10,25 +10,27 @@ app.use(bodyParser.json());
 
 // Admin route for adding products
 app.post('/admin/products',
-    upload.single('productImage'),
-    require('./handlers/products/add').handler
-);
+    upload.single('productImage'), (req, res) => {
+    require('./handlers/products/add').handler(req)
+        .then(response => res.status(response.statusCode).json(JSON.parse(response.body)))
+        .catch(error => res.status(500).json({ error: error.message }))
+});
 
 // Public route for listing products
-app.get('/products',
-    require('./handlers/products/list').handler
-);
+app.get('/products', (req, res) =>{
+    require('./handlers/products/list').handler(req)
+        .then(response => res.status(response.statusCode).json(JSON.parse(response.body)))
+        .catch(error => res.status(500).json({ error: error.message }))
+});
 
 app.post('/register',
-    upload.single('profilePic'),    // multer middleware to handle single file upload named "profilePic"
+    upload.single('profilePic'), 
     async (req, res, next) => {
         try {
-            // Prepare event object to match your Lambda-like handler signature
             const event = {
                 body: JSON.stringify(req.body),
                 file: req.file
             };
-            // Call your handler
             const response = await require('./handlers/auth/register').handler(event);
             res.status(response.statusCode).json(JSON.parse(response.body));
         } catch (error) {
@@ -37,7 +39,6 @@ app.post('/register',
     }
 );
 
-// Add to your existing routes
 app.post('/login', (req, res) => {
     require('./handlers/auth/login').handler(req)
         .then(response => res.status(response.statusCode).json(JSON.parse(response.body)))
@@ -45,10 +46,8 @@ app.post('/login', (req, res) => {
 });
 
 
-// Add these after your auth routes
-app.use(express.json()); // Ensure JSON middleware is used
+app.use(express.json());
 
-// Protected cart routes
 app.post('/cart/add',
     require('./middleware/auth'),
     (req, res) => {
@@ -76,7 +75,6 @@ app.get('/cart',
     }
 );
 
-// Error handling middleware
 app.use((err, req, res, next) => {
     if (err.code === 'LIMIT_FILE_TYPES') {
         return res.status(422).json({ error: 'Only images are allowed' });

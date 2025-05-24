@@ -1,1 +1,53 @@
-<p>cart works!</p>
+<!-- src/app/cart/cart/cart.component.html -->
+<div class="container py-4">
+  <div class="row">
+    <div class="col-md-8">
+      <div class="card">
+        <div class="card-header bg-white">
+          <h4 class="mb-0">Your Shopping Cart</h4>
+        </div>
+
+        <div class="card-body">
+          <div *ngIf="(cart$ | async)?.items?.length === 0" class="text-center py-4">
+            <h5>Your cart is empty</h5>
+            <a routerLink="/products" class="btn btn-primary mt-3">Continue Shopping</a>
+          </div>
+
+          <app-cart-item *ngFor="let item of (cart$ | async)?.items" [item]="item"
+            (quantityChange)="updateQuantity($event)" (removeItem)="removeFromCart($event)">
+          </app-cart-item>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="card">
+        <div class="card-header bg-white">
+          <h4 class="mb-0">Order Summary</h4>
+        </div>
+        <div class="card-body">
+          <div class="d-flex justify-content-between mb-2">
+            <span>Subtotal</span>
+            <span>{{ (cart$ | async)?.total | currency }}</span>
+          </div>
+          <div class="d-flex justify-content-between mb-3">
+            <span>Shipping</span>
+            <span>Free</span>
+          </div>
+          <hr>
+          <div class="d-flex justify-content-between fw-bold mb-3">
+            <span>Total</span>
+            <span>{{ (cart$ | async)?.total | currency }}</span>
+          </div>
+          <button class="btn btn-primary w-100" [disabled]="(cart$ | async)?.items?.length === 0">
+            Proceed to Checkout
+          </button>
+          <button class="btn btn-outline-danger w-100 mt-2" (click)="clearCart()"
+            [disabled]="(cart$ | async)?.items?.length === 0">
+            Clear Cart
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

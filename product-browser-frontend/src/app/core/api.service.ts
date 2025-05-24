@@ -2,30 +2,57 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { API_CONFIG } from '../core/config/api.config';
+import { Cart } from '../models/cart.model';
+
 @Injectable({
   providedIn: 'root'
 })
 export class ApiService {
   private config = API_CONFIG;
-  private apiUrl = this.config.baseUrl;
+  private apiUrl = this.config;
 
   constructor(private http: HttpClient) { }
 
   getProducts(): Observable<any> {
-    return this.http.get(`${this.apiUrl}/products`);
+    console.log(`${this.apiUrl.baseUrl}${this.apiUrl.endpoints.products}`);
+
+    return this.http.get(`${this.apiUrl.baseUrl}${this.apiUrl.endpoints.products}`);
   }
 
-  getCart(): Observable<any> {
-    return this.http.get(`${this.apiUrl}/cart`);
+  getCart(): Observable<Cart> {
+    return this.http.get<Cart>(
+      `${this.config.baseUrl}${this.config.endpoints.cart.get}`
+    );
   }
 
-  addToCart(productId: string): Observable<any> {
-    return this.http.post(`${this.apiUrl}/cart`, { productId });
+  addToCart(productId: string): Observable<Cart> {
+    return this.http.post<Cart>(
+      `${this.config.baseUrl}${this.config.endpoints.cart.add}`,
+      { productId }
+    );
   }
 
-  removeFromCart(productId: string): Observable<any> {
-    return this.http.delete(`${this.apiUrl}/cart/${productId}`);
+  updateCartQuantity(productId: string, quantity: number): Observable<Cart> {
+    return this.http.post<Cart>(
+      `${this.config.baseUrl}${this.config.endpoints.cart.updateQuantity}`,
+      { productId, quantity }
+    );
   }
+
+
+  removeFromCart(productId: string): Observable<Cart> {
+    return this.http.delete<Cart>(
+      `${this.config.baseUrl}${this.config.endpoints.cart.remove}/${productId}`
+    );
+  }
+
+  clearCart(): Observable<Cart> {
+    return this.http.delete<Cart>(
+      `${this.config.baseUrl}${this.config.endpoints.cart}`
+    );
+  }
+
+
 
   // Admin functions
   addProduct(productData: any, image: File): Observable<any> {
